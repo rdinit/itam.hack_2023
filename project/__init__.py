@@ -4,10 +4,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_admin import Admin
-from flask_admin.contrib.sqla import ModelView
 import sqlalchemy
 from werkzeug.security import generate_password_hash
+from .admin_views import MyIndexView, MyModelView
 
+    
 db = SQLAlchemy()
 
 FILL_DB = os.environ.get('FILL_DB')  # 1 or 0
@@ -30,18 +31,18 @@ def create_app():
     from .models import User, Hour, Role
 
 
-    admin = Admin(app, name='admin')
-    admin.add_view(ModelView(User, db.session))
-    admin.add_view(ModelView(Role, db.session))
+    admin = Admin(app, name='admin', index_view=MyIndexView())
+    admin.add_view(MyModelView(User, db.session))
+    admin.add_view(MyModelView(Role, db.session))
     with app.app_context():
-        if FILL_DB == "1" and len(Role.query.filter_by().all()) >= 2:
+        if FILL_DB == "1" and len(Role.query.filter_by().all()) < 2:
             try:
                 admin_role = Role(name='admin')
                 db.session.add(admin_role)
                 db.session.add(Role(name='user'))
                 db.session.commit()
                 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD') or 'admin'
-                db.session.add(User(email='email', name='admin', roles=[admin_role],
+                db.session.add(User(email='email@example.com', name='admin', roles=[admin_role],
                                     password=generate_password_hash(ADMIN_PASSWORD, method='scrypt')))
                 for i in range(14*24):
                     db.session.add(Hour())
@@ -61,5 +62,12 @@ def create_app():
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
+    from .api import api as api_blueprint
+    app.register_blueprint(api_blueprint, url_prefix='/api')
+
+    from .frontend import frontend as frontend_blueprint
+    app.register_blueprint(frontend_blueprint)
+
 
     return app

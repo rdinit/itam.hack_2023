@@ -40,6 +40,10 @@ class User(UserMixin, db.Model):
     #tags = #many to many
     #subtags = #many to many
 
+    def is_admin(self):
+        admin_role = Role.query.filter_by(name='admin').first_or_404()
+        return admin_role in self.roles
+
 class Hour(db.Model):
     __tablename__ = 'hour'
     id = db.Column(db.Integer, primary_key=True)
