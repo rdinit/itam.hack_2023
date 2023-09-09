@@ -63,7 +63,7 @@ class SubTag(db.Model):
     __tablename__ = 'subtag'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(), unique=True)
-    tag_id = db.Column(db.Integer, db.ForeignKey('type.id'))
+    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'))
 
 
 
