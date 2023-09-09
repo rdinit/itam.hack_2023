@@ -22,12 +22,12 @@ tags = db.Table('tags',
                 db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True)
                 )
 
-users_tags = db.Table('users_roles',
+users_tags = db.Table('users_tags',
                        db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
                        db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True)
                        )
 
-users_subtags = db.Table('users_roles',
+users_subtags = db.Table('users_subtags',
                        db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
                        db.Column('subtag_id', db.Integer, db.ForeignKey('subtag.id'), primary_key=True)
                        )
