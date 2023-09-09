@@ -12,12 +12,14 @@ from .admin_views import MyIndexView, MyModelView
 db = SQLAlchemy()
 
 FILL_DB = os.environ.get('FILL_DB')  # 1 or 0
+SECRET_KEY = os.environ.get('SECRET_KEY')
+SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
 
 def create_app():
     app = Flask(__name__)
 
-    app.config['SECRET_KEY'] = 'secret-key-goes-here'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@postgres_server:5432/test1'
+    app.config['SECRET_KEY'] = SECRET_KEY
+    app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 
     db.init_app(app)
     with app.app_context():
