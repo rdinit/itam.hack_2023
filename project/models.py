@@ -22,6 +22,16 @@ tags = db.Table('tags',
                 db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True)
                 )
 
+users_tags = db.Table('users_roles',
+                       db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+                       db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True)
+                       )
+
+users_subtags = db.Table('users_roles',
+                       db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+                       db.Column('subtag_id', db.Integer, db.ForeignKey('subtag.id'), primary_key=True)
+                       )
+
 class Role(db.Model):
     __tablename__ = 'role'
     id = db.Column(db.Integer, primary_key=True)
@@ -33,12 +43,17 @@ class User(UserMixin, db.Model):
     roles = db.relationship('Role', secondary=users_roles, backref='users')
     email = db.Column(db.String(), unique=True)
     password = db.Column(db.String())
-    name = db.Column(db.String(), unique=True)
+    name = db.Column(db.String())
+    username = db.Column(db.String(), unique=True)
     bio = db.Column(db.String())
     
     free_hours = db.relationship('Hour', secondary=users_hours, backref='users')
-    #tags = #many to many
-    #subtags = #many to many
+    tags = db.relationship('Tag', secondary=users_tags, backref='users')
+    subtags = db.relationship('SubTag', secondary=users_subtags, backref='users')
+
+    def is_admin(self):
+        admin_role = Role.query.filter_by(name='admin').first_or_404()
+        return admin_role in self.roles
 
 class Hour(db.Model):
     __tablename__ = 'hour'
@@ -63,7 +78,7 @@ class SubTag(db.Model):
     __tablename__ = 'subtag'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(), unique=True)
-    tag_id = db.Column(db.Integer, db.ForeignKey('type.id'))
+    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'))
 
 
 
