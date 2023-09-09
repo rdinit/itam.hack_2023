@@ -1,0 +1,47 @@
+version: "3"
+services:
+  postgres_server:
+    image: postgres:13.3
+    environment:
+      POSTGRES_HOST: "postgres_server"
+      POSTGRES_DB: "test1"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "password"
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres:/data/postgres
+    networks:
+      - postgres
+
+  flask_server:
+    depends_on:
+      - postgres_server
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+#    command: 
+    ports:
+      - 80:80
+    networks:
+      - postgres
+    image: flask_server
+    #command: 
+#    command: flask db init
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    networks:
+      - postgres
+
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  postgres:
