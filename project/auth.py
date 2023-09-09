@@ -24,7 +24,7 @@ def login_post():
         flash('Проверьте лоин или пароль')
         return redirect(url_for('auth.login'))
     login_user(user, remember=remember)
-    return redirect(url_for('main.profile'))
+    return redirect(url_for('main.profile', username=user.username))
 
 @auth.route('/signup')
 def signup():
@@ -33,6 +33,7 @@ def signup():
 @auth.route('/signup', methods=['POST'])
 def signup_post():
     email = request.form.get('email')
+    username = request.form.get('username')
     name = request.form.get('name')
     password = request.form.get('password')
 
@@ -41,8 +42,12 @@ def signup_post():
     if user:
         flash('Email address already exists')
         return redirect(url_for('auth.signup'))
+    user = User.query.filter_by(username=username).first()
+    if user:
+        flash('username address already exists')
+        return redirect(url_for('auth.signup'))
 
-    new_user = User(email=email, name=name, password=generate_password_hash(password, method='scrypt'))
+    new_user = User(email=email, username=username, name=name, password=generate_password_hash(password, method='scrypt'))
 
 
     db.session.add(new_user)

@@ -42,7 +42,7 @@ def create_app():
                 db.session.add(Role(name='user'))
                 db.session.commit()
                 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD') or 'admin'
-                db.session.add(User(email='email@example.com', name='admin', roles=[admin_role],
+                db.session.add(User(email='email@example.com', username='admin', roles=[admin_role],
                                     password=generate_password_hash(ADMIN_PASSWORD, method='scrypt')))
                 for i in range(14*24):
                     db.session.add(Hour())
@@ -65,9 +65,5 @@ def create_app():
 
     from .api import api as api_blueprint
     app.register_blueprint(api_blueprint, url_prefix='/api')
-
-    from .frontend import frontend as frontend_blueprint
-    app.register_blueprint(frontend_blueprint)
-
 
     return app
