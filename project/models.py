@@ -37,6 +37,15 @@ friends = db.Table('friends',
                    db.Column('user2_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
                    )
 
+student_associations_users =db.Table('student_associations_users',
+                                     db.Column('student_association_id', db.Integer, db.ForeignKey('student_association.id'), primary_key=True),
+                                     db.Column('user_id', db.Integer, db.foreignKey('user.id'), primary_key=True)
+                                     )
+
+student_associations_tags =db.Table('student_associations_tags',
+                                     db.Column('student_association_id', db.Integer, db.ForeignKey('student_association.id'), primary_key=True),
+                                     db.Column('tag_id', db.Integer, db.foreignKey('tag.id'), primary_key=True)
+                                     )
 
 class Role(db.Model):
     __tablename__ = 'role'
@@ -56,7 +65,6 @@ class User(UserMixin, db.Model):
     free_hours = db.relationship('Hour', secondary=users_hours, backref='users')
     tags = db.relationship('Tag', secondary=users_tags, backref='users')
     subtags = db.relationship('SubTag', secondary=users_subtags, backref='users')
-
     friend_list = db.relationship('User', secondary=friends, primaryjoin=(friends.c.user1_id == id),
                                   secondaryjoin=(friends.c.user2_id == id), backref=db.backref('followers'))
     
@@ -64,7 +72,7 @@ class User(UserMixin, db.Model):
     def is_admin(self):
         admin_role = Role.query.filter_by(name='admin').first_or_404()
         return admin_role in self.roles
-    
+
     def friend(self, user):
         if not self.is_friend(user):
             self.friend_list.append(user)
@@ -78,7 +86,7 @@ class User(UserMixin, db.Model):
             #return self
         
     def is_friend(self, user):
-        return user in self.friend_list
+        return self.friend_list.filter(friends.c.user2_id == user.id).count() > 0
 
 class Hour(db.Model):
     __tablename__ = 'hour'
@@ -104,27 +112,20 @@ class SubTag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(), unique=True)
     tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'))
+    
+class StudentAssociation(db.Model):
+    __tablename__ = 'student_association'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(), unique=True)
+    info = db.Column(db.String(), unique=True)
+    subscribers = db.relationship('User', secondary=student_associations_users, backref='student_associations')
+    tags = db.relationship('Tag', secondary=student_associations_tags, backref='student_associations')
+    
 
 
 
 '''
 
 ToDo:
-    # tagtype это сборка тэгов по темам, например, учеба, хобби, студобъединение
-    # каждый тэг присвоен к типу тэгов. Например C++ к учебе
-    # субтэг это подтема. Например у C++ может быть "синтаксис", "ООП", "Типы данных". Более узкие темы
-    # 
-    TagType:
-        - name unique=True
-        - tags [Tag]
-        - 
-    Tag:
-        - name,
-        - tag_type_id
-        - subtags [Subtag]
-        approved = db.Column(db.Boolean(), default=True)
 
-    SubTag:
-        - name
-        - tag_id 
 '''

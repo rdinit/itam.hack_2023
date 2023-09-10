@@ -167,3 +167,4 @@ env/
 
 migrations/
 postgres/
+/.vs/slnx.sqlite
