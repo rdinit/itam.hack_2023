@@ -31,6 +31,34 @@ def get_tags():
     return jsonify([{'id': tag.id, 'name': tag.name} for tag in tags])
 
 
+
+
+@api.route('/interested_tags', methods=['PUT'])
+def add_interested_tags():
+    if not request.json:
+        return jsonify({'error': 'Empty request'})
+    tag_id = request.json['id']
+    tag = Tag.query.filter_by(id=tag_id).first_or_404()
+    current_user.interested_tags.append(tag)
+    db.session.commit()
+    return jsonify({'success': 'ok'})
+
+@api.route('/interested_tags/<int:tag_id>', methods=['DELETE'])
+def delete_interested_tag(tag_id):
+    tag = Tag.query.filter_by(id=tag_id).first_or_404()
+    if tag not in current_user.interested_tags:
+        return jsonify({'error': 'user does not have tag'})
+    current_user.interested_tags.remove(tag)
+    db.session.commit()
+    return jsonify({'success': 'ok'})    
+
+@api.route('/interested_tags', methods=['GET'])
+def get_interested_tags():
+    tags = Tag.query.all()
+    return jsonify([{'id': tag.id, 'name': tag.name} for tag in tags])
+
+
+
 @api.route('/tags/<int:tag_id>/subtagss', methods=['GET'])
 def get_subtags(tag_id):
     tags = Tag.query.get(tag_id).subtags

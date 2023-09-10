@@ -37,6 +37,7 @@ def create_app():
     admin.add_view(MyModelView(User, db.session))
     admin.add_view(MyModelView(Role, db.session))
     with app.app_context():
+
         if FILL_DB == "1" and len(Role.query.filter_by().all()) < 2:
             try:
                 admin_role = Role(name='admin')

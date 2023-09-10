@@ -9,7 +9,8 @@ main = Blueprint('main', __name__)
 def index():
     if current_user.is_authenticated:
         #recommend_users = рекомендации генерим
-        return render_template('index_for_user.html', recommend_users=[current_user])#.get_potential_friends())
+        return render_template('index_for_user.html', recommend_users=current_user.get_potential_friends()[:100])
+        #return render_template('index_for_user.html', recommend_users=[current_user])
     return render_template('index.html')
 
 @main.route('/profile/<username>')
