@@ -32,6 +32,16 @@ users_subtags = db.Table('users_subtags',
                        db.Column('subtag_id', db.Integer, db.ForeignKey('subtag.id'), primary_key=True)
                        )
 
+users_interested_tags = db.Table('users_interested_tags',
+                       db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+                       db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True)
+                       )
+
+users_interested_subtags = db.Table('users_interested_subtags',
+                       db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+                       db.Column('subtag_id', db.Integer, db.ForeignKey('subtag.id'), primary_key=True)
+                       )
+
 friends = db.Table('friends',
                    db.Column('user1_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
                    db.Column('user2_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
@@ -65,6 +75,9 @@ class User(UserMixin, db.Model):
     free_hours = db.relationship('Hour', secondary=users_hours, backref='users')
     tags = db.relationship('Tag', secondary=users_tags, backref='users')
     subtags = db.relationship('SubTag', secondary=users_subtags, backref='users')
+    
+    interested_tags = db.relationship('Tag', secondary=users_interested_tags, backref='interested_users')
+    interested_subtags = db.relationship('SubTag', secondary=users_interested_subtags, backref='interested_users')
     friend_list = db.relationship('User', secondary=friends, primaryjoin=(friends.c.user1_id == id),
                                   secondaryjoin=(friends.c.user2_id == id), backref=db.backref('followers'))
     
