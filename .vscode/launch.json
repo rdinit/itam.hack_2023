@@ -11,7 +11,8 @@
             "module": "flask",
             "env": {
                 "FLASK_APP": "project",
-                "FLASK_DEBUG": "1"
+                "FLASK_DEBUG": "1",
+                "SQLALCHEMY_DATABASE_URI": "postgresql://postgres:password@localhost:5432/test1"
             },
             "args": [
                 "run",
