@@ -32,6 +32,12 @@ users_subtags = db.Table('users_subtags',
                        db.Column('subtag_id', db.Integer, db.ForeignKey('subtag.id'), primary_key=True)
                        )
 
+friends = db.Table('friends',
+                   db.Column('user1_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+                   db.Column('user2_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
+                   )
+
+
 class Role(db.Model):
     __tablename__ = 'role'
     id = db.Column(db.Integer, primary_key=True)
@@ -51,9 +57,28 @@ class User(UserMixin, db.Model):
     tags = db.relationship('Tag', secondary=users_tags, backref='users')
     subtags = db.relationship('SubTag', secondary=users_subtags, backref='users')
 
+    friend_list = db.relationship('User', secondary=friends, primaryjoin=(friends.c.user1_id == id),
+                                  secondaryjoin=(friends.c.user2_id == id), backref=db.backref('followers'))
+    
+
     def is_admin(self):
         admin_role = Role.query.filter_by(name='admin').first_or_404()
         return admin_role in self.roles
+    
+    def friend(self, user):
+        if not self.is_friend(user):
+            self.friend_list.append(user)
+            user.friend_list.append(self)
+            #return self
+        
+    def unfriend(self, user):
+        if self.is_friend(user):
+            self.friend_list.remove(user)
+            user.friend_list.remove(self)
+            #return self
+        
+    def is_friend(self, user):
+        return user in self.friend_list
 
 class Hour(db.Model):
     __tablename__ = 'hour'

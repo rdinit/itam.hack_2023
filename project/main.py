@@ -16,3 +16,11 @@ def index():
 def profile(username):
     user = User.query.filter_by(username=username).first_or_404()
     return render_template('profile.html', current_user=current_user, user=user)
+
+@main.route('/profile/<username>/add_to_friends', methods=['POST'])
+@login_required
+def add_friend(username):
+    user2 = User.query.filter_by(username=username).first_or_404()
+    current_user.friend(user2)
+    db.session.commit()
+    return 'ok'#user1.friend_list[0].username + user2.friend_list[0].username
