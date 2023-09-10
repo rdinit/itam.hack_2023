@@ -6,40 +6,55 @@
    <div class="container ">
       <div class="row">
          <div class="col-3 w-20">
-            <img src="../static/profile.svg"/>
+            <img style="max-height: 150px;" src="../static/profile.svg"/>
          </div>
          <div class="col-7 w-50">
             <h3>{{ user.username }}</h3>
          </div>
       </div>
    </div>
-   <div style="min-width: 50%;"> 
+   <div class="d-flex flex-column" style="min-width: 50%;"> 
       <h4>О себе:</h4>
-      {{user.bio}}
+      <textarea type="text" id="bio" value="{{user.bio}}" class="" {% if current_user.username != user.username %}readonly{% endif %}></textarea>
+      {% if current_user.username == user.username %}
+      <button class="btn btn-sm bg-primary mt-2" onclick=set_bio()>Сохранить изменения</button>
+      {% endif %}
    </div>
 </div>
 <div class="mt-4">
    <h4>Знаю/умею:</h4>
-   <div class="d-flex flex-row">
+   {% if current_user.username == user.username %}
+   <button class="btn btn-sm bg-primary mt-2" onclick=add_tag()>Добавить интересы</button>
+   {% endif %}
+   <div class="d-flex flex-row mt-3">
       {% for tag in user.tags * 3 %}
       <div class="d-flex flex-column me-2">
          <div class="badge bg-{{ tag.color }} mt-2">{{tag.name}}</div>
          {% for subtag in tag.getsubtags_with_user(user) %}
             <div class="badge bg-{{ tag.color }} mt-2 ms-3">{{subtag.name}}</div>
          {% endfor %}
+         {% if current_user.username == user.username %}
+            <button class="btn btn-sm bg-{{ tag.color }} mt-2 ms-3" onclick=add_subtag("{{tag.id}}")>+</button>
+         {% endif %}
       </div>
       {% endfor %}
    </div>
 </div>
 <div class="mt-4">
    <h4>Хочу развиваться в:</h4>
-   <div class="d-flex flex-row">
+   {% if current_user.username == user.username %}
+   <button class="btn btn-sm bg-primary mt-2" onclick=add_interested_tag()>Добавить интересы</button>
+   {% endif %}
+   <div class="d-flex flex-row mt-3">
       {% for tag in user.interested_tags * 3 %}
       <div class="d-flex flex-column me-2">
          <div class="badge bg-{{ tag.color }} mt-2">{{tag.name}}</div>
          {% for subtag in tag.get_interested_subtags_with_user(user) %}
             <div class="badge bg-{{ tag.color }} mt-2 ms-3">{{subtag.name}}</div>
          {% endfor %}
+         {% if current_user.username == user.username %}
+            <button class="btn btn-sm bg-{{ tag.color }} mt-2 ms-3" onclick=add_subtag("{{tag.id}}")>+</button>
+         {% endif %}
       </div>
       {% endfor %}
    </div>
