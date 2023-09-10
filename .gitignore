@@ -167,3 +167,8 @@ env/
 
 migrations/
 postgres/
+/deploy.sh
+/.gitignore
+/.vs/slnx.sqlite
+/.vs/VSWorkspaceState.json
+/.vs/slnx.sqlite
