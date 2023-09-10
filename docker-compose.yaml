@@ -1,4 +1,5 @@
 version: "3"
+
 services:
   postgres_server:
     image: postgres:13.3
