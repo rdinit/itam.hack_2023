@@ -15,6 +15,7 @@ FILL_DB = os.environ.get('FILL_DB')  # 1 or 0
 SECRET_KEY = os.environ.get('SECRET_KEY')
 SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
 
+
 def create_app():
     app = Flask(__name__)
 
@@ -30,13 +31,52 @@ def create_app():
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
 
-    from .models import User, Hour, Role
+    from .models import User, Hour, Role, Tag, SubTag, TagType
+    
+
 
 
     admin = Admin(app, name='admin', index_view=MyIndexView())
     admin.add_view(MyModelView(User, db.session))
     admin.add_view(MyModelView(Role, db.session))
     with app.app_context():
+        if FILL_DB == "1":
+            pass    
+            #add tags and subtags
+            '''
+            f = open('tags.txt', 'r').readlines()
+            i = 2
+            tag_name = f[0].rstrip()
+            tag_color = f[1].rstrip()
+            tag = Tag(name=tag_name, color=tag_color)
+            db.session.add(tag)
+            db.session.commit()
+                
+
+            tag_id = tag.id
+            subtags = []
+            while i < len(f):
+                t = f[i].rstrip()
+                if t != '$tag_split$':
+                    subtags.append(SubTag(name=t, tag_id=tag_id))
+                    db.session.add(subtags[-1])
+                    db.session.commit()
+                else:
+                    tag.subtags = subtags
+                    db.session.commit()
+                    i += 1
+                    if i < len(f):
+                        tag_name = f[i].rstrip()
+                        i += 1
+                        tag_color = f[i].rstrip()
+                        tag = Tag(name=tag_name, color=tag_color)
+                        db.session.add(tag)
+                        db.session.commit()
+                        tag_id = tag.id
+                        subtags = []
+                i += 1
+            db.session.commit()
+            '''
         if FILL_DB == "1" and len(Role.query.filter_by().all()) < 2:
             try:
                 admin_role = Role(name='admin')
@@ -48,7 +88,9 @@ def create_app():
                                     password=generate_password_hash(ADMIN_PASSWORD, method='scrypt')))
                 for i in range(14*24):
                     db.session.add(Hour())
-                db.session.commit()#'''
+                db.session.commit()
+                
+
             except sqlalchemy.exc.ProgrammingError:
                 pass
 
