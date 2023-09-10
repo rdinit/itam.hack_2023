@@ -123,6 +123,9 @@ class Tag(db.Model):
 
     def getsubtags_with_user(self, user: User):
         return list(filter(lambda x: x in user.subtags, self.subtags))
+
+    def get_interested_subtags_with_user(self, user: User):
+        return list(filter(lambda x: x in user.interested_subtags, self.subtags))
     
 class SubTag(db.Model):
     __tablename__ = 'subtag'

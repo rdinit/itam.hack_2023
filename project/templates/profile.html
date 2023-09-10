@@ -18,13 +18,26 @@
       {{user.bio}}
    </div>
 </div>
-<div>
+<div class="mt-4">
    <h4>Знаю/умею:</h4>
    <div class="d-flex flex-row">
       {% for tag in user.tags * 3 %}
       <div class="d-flex flex-column me-2">
          <div class="badge bg-{{ tag.color }} mt-2">{{tag.name}}</div>
          {% for subtag in tag.getsubtags_with_user(user) %}
+            <div class="badge bg-{{ tag.color }} mt-2 ms-3">{{subtag.name}}</div>
+         {% endfor %}
+      </div>
+      {% endfor %}
+   </div>
+</div>
+<div class="mt-4">
+   <h4>Хочу развиваться в:</h4>
+   <div class="d-flex flex-row">
+      {% for tag in user.interested_tags * 3 %}
+      <div class="d-flex flex-column me-2">
+         <div class="badge bg-{{ tag.color }} mt-2">{{tag.name}}</div>
+         {% for subtag in tag.get_interested_subtags_with_user(user) %}
             <div class="badge bg-{{ tag.color }} mt-2 ms-3">{{subtag.name}}</div>
          {% endfor %}
       </div>
