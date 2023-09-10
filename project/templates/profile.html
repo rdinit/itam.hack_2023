@@ -2,7 +2,33 @@
 
 {% block content %}
 
-<h1 class="title">
-   Профиль {{ user.username }}!
-</h1>
+<div class="d-flex flex-row">
+   <div class="container ">
+      <div class="row">
+         <div class="col-3 w-20">
+            <img src="../static/profile.svg"/>
+         </div>
+         <div class="col-7 w-50">
+            <h3>{{ user.username }}</h3>
+         </div>
+      </div>
+   </div>
+   <div style="min-width: 50%;"> 
+      <h4>О себе:</h4>
+      {{user.bio}}
+   </div>
+</div>
+<div>
+   <h4>Знаю/умею:</h4>
+   <div class="d-flex flex-row">
+      {% for tag in user.tags * 3 %}
+      <div class="d-flex flex-column me-2">
+         <div class="badge bg-{{ tag.color }} mt-2">{{tag.name}}</div>
+         {% for subtag in tag.getsubtags_with_user(user) %}
+            <div class="badge bg-{{ tag.color }} mt-2 ms-3">{{subtag.name}}</div>
+         {% endfor %}
+      </div>
+      {% endfor %}
+   </div>
+</div>
 {% endblock %}

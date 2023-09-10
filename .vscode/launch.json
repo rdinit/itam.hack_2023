@@ -12,11 +12,12 @@
             "env": {
                 "FLASK_APP": "project",
                 "FLASK_DEBUG": "1",
+                "SECRET_KEY": "test-string",
                 "SQLALCHEMY_DATABASE_URI": "postgresql://postgres:password@localhost:5432/test1"
             },
             "args": [
                 "run",
-                "--no-debugger",
+                "--no-debug",
                 "--no-reload"
             ],
             "jinja": true,

@@ -60,7 +60,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String())
     name = db.Column(db.String())
     username = db.Column(db.String(), unique=True)
-    bio = db.Column(db.String())
+    bio = db.Column(db.String(), default='')
     
     free_hours = db.relationship('Hour', secondary=users_hours, backref='users')
     tags = db.relationship('Tag', secondary=users_tags, backref='users')
@@ -106,6 +106,10 @@ class Tag(db.Model):
     tag_type_id = db.Column(db.Integer, db.ForeignKey('tagtype.id'))
     approved = db.Column(db.Boolean(), default=True)
     subtags = db.relationship('SubTag')
+    color = db.Column(db.String(), default='primary')
+
+    def getsubtags_with_user(self, user: User):
+        return list(filter(lambda x: x in user.subtags, self.subtags))
     
 class SubTag(db.Model):
     __tablename__ = 'subtag'
@@ -120,8 +124,6 @@ class StudentAssociation(db.Model):
     info = db.Column(db.String(), unique=True)
     subscribers = db.relationship('User', secondary=student_associations_users, backref='student_associations')
     tags = db.relationship('Tag', secondary=student_associations_tags, backref='student_associations')
-    
-
 
 
 '''
