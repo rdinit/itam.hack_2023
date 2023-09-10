@@ -86,7 +86,7 @@ class User(UserMixin, db.Model):
             #return self
         
     def is_friend(self, user):
-        return self.friend_list.filter(friends.c.user2_id == user.id).count() > 0
+        return user in self.friend_list
 
 class Hour(db.Model):
     __tablename__ = 'hour'
