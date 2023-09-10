@@ -1,9 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h>Meet MISIS</h3> - платформа для нахождения людей.
-Тут будут рекомендации
-
-Тут будут рекомендации студ объединений
-
+<h3>Meet MISIS</h3> - платформа для нахождения людей.
+<div class="d-flex flex-row">
+    {% for user in recommend_users %}
+    <div class="card">
+        <div class="mt-1">
+            <img style="max-height: 150px;" src="../static/profile.svg"/>
+        </div>
+        <div class="mt-1 mb-1 me-1 ms-1">
+            <h3>{{ user.username }}</h3>
+            <a class="btn btn-sm bg-primary mt-2" href="{{ url_for('main.profile', username=user.username)}}">Профиль</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}
