@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, flash
 from .models import User, Tag, SubTag
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
@@ -62,7 +62,6 @@ def delete_subtag(subtag_id):
     db.session.commit()
     return jsonify({'success': 'ok'})
 
-
 @api.route('/user/friend', methods=['POST'])
 def add_friend():
     if not request.json:
@@ -86,10 +85,11 @@ def delete_friend():
 @api.route('/user/bio', methods=['PUT'])
 def update_bio():
     if not request.json:
-        return jsonify({'error': 'Empty request'})
+        return 400
     new_bio = request.json['bio']
     current_user.bio = new_bio
     db.session.commit()
+    # flash(new_bio)
     return jsonify({'success':'ok'})
 
 
