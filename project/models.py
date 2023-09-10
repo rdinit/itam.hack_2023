@@ -103,14 +103,14 @@ class User(UserMixin, db.Model):
         return user in self.friend_list
     
     def get_potential_friends(self):
-        potential_friends = session.query(User).filter(User.tags.overlap(self.tags)).all() #tags-tags
-        potential_friends.append(session.query(User).filter(User.subtags.overlap(self.subtags)).all()) #subtags-subtags
-        potential_friends.append(session.query(User).filter(User.interested_tags.overlap(self.tags)).all()) #tags-interested_tags
-        potential_friends.append(session.query(User).filter(User.tags.overlap(self.interested_tags)).all()) #interested_tags-tags
-        potential_friends.append(session.query(User).filter(User.interested_subtags.overlap(self.subtags)).all()) #subtags-interested_subtags
-        potential_friends.append(session.query(User).filter(User.subtags.overlap(self.interested_subtags)).all()) #interested_subtags-subtags
-        potential_friends.append(session.query(User).filter(User.interested_tags.overlap(self.interested_tags)).all()) #interested_tags-interested_tags
-        potential_friends.append(session.query(User).filter(User.interested_subtags.overlap(self.interested_subtags)).all()) #interested_subtags-interested_subtags
+        potential_friends = db.session.query(User).filter(User.tags.overlap(self.tags)).all() #tags-tags
+        potential_friends.append(db.session.query(User).filter(User.subtags.overlap(self.subtags)).all()) #subtags-subtags
+        potential_friends.append(db.session.query(User).filter(User.interested_tags.overlap(self.tags)).all()) #tags-interested_tags
+        potential_friends.append(db.session.query(User).filter(User.tags.overlap(self.interested_tags)).all()) #interested_tags-tags
+        potential_friends.append(db.session.query(User).filter(User.interested_subtags.overlap(self.subtags)).all()) #subtags-interested_subtags
+        potential_friends.append(db.session.query(User).filter(User.subtags.overlap(self.interested_subtags)).all()) #interested_subtags-subtags
+        potential_friends.append(db.session.query(User).filter(User.interested_tags.overlap(self.interested_tags)).all()) #interested_tags-interested_tags
+        potential_friends.append(db.session.query(User).filter(User.interested_subtags.overlap(self.interested_subtags)).all()) #interested_subtags-interested_subtags
         return potential_friends
         
 
