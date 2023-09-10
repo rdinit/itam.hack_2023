@@ -39,12 +39,12 @@ friends = db.Table('friends',
 
 student_associations_users =db.Table('student_associations_users',
                                      db.Column('student_association_id', db.Integer, db.ForeignKey('student_association.id'), primary_key=True),
-                                     db.Column('user_id', db.Integer, db.foreignKey('user.id'), primary_key=True)
+                                     db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
                                      )
 
 student_associations_tags =db.Table('student_associations_tags',
                                      db.Column('student_association_id', db.Integer, db.ForeignKey('student_association.id'), primary_key=True),
-                                     db.Column('tag_id', db.Integer, db.foreignKey('tag.id'), primary_key=True)
+                                     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True)
                                      )
 
 class Role(db.Model):
