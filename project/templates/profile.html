@@ -2,6 +2,9 @@
 
 {% block content %}
 
+<!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> -->
+<script src="../static/js/profile.js" defer></script>
+
 <div class="d-flex flex-row">
    <div class="container ">
       <div class="row">
@@ -18,7 +21,7 @@
       <h4>О себе:</h4>
       <textarea type="text" id="bio" value="{{user.bio}}" class="" {% if current_user.username != user.username %}readonly{% endif %}></textarea>
       {% if current_user.username == user.username %}
-      <button class="btn btn-sm bg-primary mt-2" onclick=set_bio()>Сохранить изменения</button>
+      <button id="set_bio" class="btn btn-sm bg-primary mt-2">Сохранить изменения</button>
       {% endif %}
    </div>
 </div>
@@ -60,4 +63,5 @@
       {% endfor %}
    </div>
 </div>
+
 {% endblock %}
