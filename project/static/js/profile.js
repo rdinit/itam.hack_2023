@@ -52,7 +52,7 @@ add_subtag = async function(button, tag_id, type){
         new_html += '<option value="' + res.data[i]["id"] + '">' + res.data[i]["name"] + '</option>'
     }
     button.parentElement.innerHTML =new_html + '</select><button class="btn btn-sm bg-primary mt-2 mb-2" onclick=\'finish_add_tag(this, ' + tag_id + ',"' + type + '")\'>Добавить</button>' + button.parentElement.innerHTML;
-
+    
 }
 
 finish_add_tag = async function(button, tag_id, type){
