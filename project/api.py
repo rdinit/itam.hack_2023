@@ -92,7 +92,7 @@ def add_interested_subtags():
     subtag_id = request.json['id']
     subtag = SubTag.query.filter_by(id=subtag_id).first_or_404()
     tag = Tag.query.filter_by(id=subtag.tag_id).first_or_404()
-    if tag  not in current_user.interested_tags:
+    if tag not in current_user.interested_tags:
         return jsonify({'error': 'tag not added'})
     current_user.subtags.append(subtag)
     db.session.commit()

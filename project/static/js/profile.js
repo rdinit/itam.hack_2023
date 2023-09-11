@@ -17,7 +17,7 @@ set_bio.addEventListener(`click`, function () {
 })
 
 add_tag = async function(button, type){
-
+    button.disabled = true;
     res = await axios.get("/api/tags");
 
     console.log(res);
@@ -43,7 +43,7 @@ finish_add_tag = async function(button, type){
 }
 
 add_subtag = async function(button, tag_id, type){
-
+    button.disabled = true;
     res = await axios.get("/api/tags/" + tag_id + "/subtags");
 
     console.log(res);
@@ -65,5 +65,5 @@ finish_add_tag = async function(button, tag_id, type){
     axios.put("/api/" + type, {
         id: parseInt(value),
     })
-    //window.location.href = window.location.href;
+    window.location.href = window.location.href;
 }

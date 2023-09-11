@@ -39,7 +39,7 @@
                <div class="badge bg-{{ tag.color }} mt-2 ms-3">{{subtag.name}}</div>
             {% endfor %}
             {% if current_user.username == user.username %}
-               <button class="btn btn-sm bg-{{ tag.color }} mt-2 ms-3" onclick='add_subtag(this, {{tag.id}}, "interested_subtags")'>+</button>
+               <button class="btn btn-sm bg-{{ tag.color }} mt-2 ms-3" onclick='add_subtag(this, {{tag.id}}, "subtags")'>+</button>
             {% endif %}
          </div>
          {% endfor %}
