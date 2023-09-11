@@ -2,13 +2,13 @@
 
 {% block content %}
 <h3>Meet MISIS</h3> - платформа для нахождения людей.
-<div class="d-flex flex-row">
+<div class="d-flex flex-row flex-wrap">
     {% for user in recommend_users %}
-    <div class="card">
+    <div class="card m-1">
         <div class="mt-1">
             <img style="max-height: 150px;" src="../static/profile.svg"/>
         </div>
-        <div class="mt-3 mb-3 me-3 ms-3">
+        <div class="m-3">
             <h3>{{ user[0].username }}</h3>
             <a class="btn btn-sm bg-primary mt-2" href="{{ url_for('main.profile', username=user[0].username)}}">Профиль</a>
         </div>
