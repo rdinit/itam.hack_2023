@@ -64,7 +64,6 @@ def get_subtags(tag_id):
     tags = Tag.query.get(tag_id).subtags
     return jsonify([{'id': tag.id, 'name': tag.name} for tag in tags])
 
-
 @api.route('/subtags', methods=['PUT'])
 def add_subtags():
     if not request.json:
@@ -81,14 +80,42 @@ def add_subtags():
 @api.route('/subtags/<int:subtag_id>', methods=['DELETE'])
 def delete_subtag(subtag_id):
     subtag = SubTag.query.filter_by(id=subtag_id).first_or_404()
-    if subtag not in current_user.tags:
+    if subtag not in current_user.subtags:
         return jsonify({'error': 'user does not have subtag'})
     tag = Tag.query.filter_by(id=subtag.tag_id).first_or_404()
     if tag  not in current_user.tags:
         return jsonify({'error': 'tag not added'})
-    current_user.tags.remove(subtag)
+    current_user.subtags.remove(subtag)
     db.session.commit()
     return jsonify({'success': 'ok'})
+
+
+@api.route('/interested_subtags', methods=['PUT'])
+def add_interested_subtags():
+    if not request.json:
+        return jsonify({'error': 'Empty request'})
+    subtag_id = request.json['id']
+    subtag = SubTag.query.filter_by(id=subtag_id).first_or_404()
+    tag = Tag.query.filter_by(id=subtag.tag_id).first_or_404()
+    if tag  not in current_user.interested_tags:
+        return jsonify({'error': 'tag not added'})
+    current_user.subtags.append(subtag)
+    db.session.commit()
+    return jsonify({'success': 'ok'})
+    
+@api.route('/interested_subtags/<int:subtag_id>', methods=['DELETE'])
+def delete_interested_subtag(subtag_id):
+    subtag = SubTag.query.filter_by(id=subtag_id).first_or_404()
+    if subtag not in current_user.interested_subtags:
+        return jsonify({'error': 'user does not have subtag'})
+    tag = Tag.query.filter_by(id=subtag.tag_id).first_or_404()
+    if tag not in current_user.interested_tags:
+        return jsonify({'error': 'tag not added'})
+    current_user.interested_subtags.remove(subtag)
+    db.session.commit()
+    return jsonify({'success': 'ok'})
+
+
 
 @api.route('/user/friend', methods=['POST'])
 def add_friend():
