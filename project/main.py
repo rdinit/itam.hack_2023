@@ -9,7 +9,11 @@ main = Blueprint('main', __name__)
 def index():
     if current_user.is_authenticated:
         #recommend_users = рекомендации генерим
-        return render_template('index_for_user.html', recommend_users=current_user.get_potential_friends())
+        users = []
+        for user in current_user.get_potential_friends():
+            if user[0] not in users:
+                users.append(user[0])
+        return render_template('index_for_user.html', recommend_users=users)
         #return render_template('index_for_user.html', recommend_users=[current_user])
     return render_template('index.html')
 

@@ -9,8 +9,8 @@
             <img style="max-height: 150px;" src="../static/profile.svg"/>
         </div>
         <div class="m-3">
-            <h3>{{ user[0].username }}</h3>
-            <a class="btn btn-sm bg-primary mt-2" href="{{ url_for('main.profile', username=user[0].username)}}">Профиль</a>
+            <h3>{{ user.username }}</h3>
+            <a class="btn btn-sm bg-primary mt-2" href="{{ url_for('main.profile', username=user.username)}}">Профиль</a>
         </div>
     </div>
     {% endfor %}
