@@ -1,6 +1,6 @@
 
 // const axios = require('axios/dist/browser/axios.cjs'); // browser
-axios.defaults.baseURL = "http://localhost:80";
+axios.defaults.baseURL = "http://localhost:5000";
 
 let set_bio = document.getElementById("set_bio");
 
@@ -16,3 +16,28 @@ set_bio.addEventListener(`click`, function () {
     }
 })
 
+add_tag = async function(button, type){
+
+    res = await axios.get("/api/" + type);
+
+    console.log(res);
+    new_html = '<select class="form-select" aria-label="выбор интереса">';
+    for (let i = 0; i < res.data.length; i++) {
+        new_html += '<option value="' + res.data[i]["id"] + '">' + res.data[i]["name"] + '</option>'
+    }
+    button.parentElement.innerHTML =new_html + '</select><button class="btn btn-sm bg-primary mt-2 mb-2" onclick=\'finish_add_tag(this, "' + type + '")\'>Добавить</button>' + button.parentElement.innerHTML;
+
+}
+
+finish_add_tag = async function(button, type){
+    
+    console.log(button.parentElement)
+    value = button.parentElement.getElementsByClassName('form-select')[0].value
+    if (value == '') {
+        value = '1'
+    }
+    axios.put("/api/" + type, {
+        id: parseInt(value),
+    })
+    window.location.href = window.location.href;
+}
