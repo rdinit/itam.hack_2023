@@ -1,6 +1,6 @@
 
 // const axios = require('axios/dist/browser/axios.cjs'); // browser
-axios.defaults.baseURL = "http://localhost:5000";
+axios.defaults.baseURL = "http://localhost:7000";
 
 let set_bio = document.getElementById("set_bio");
 
