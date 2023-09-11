@@ -133,6 +133,7 @@ class User(UserMixin, db.Model):
     def get_potential_friends(self):
         users = self.get_potential_teachers() + self.get_potential_cooperators() + self.get_potential_coolearners() + self.get_potential_students()
         users.sort(key=lambda x: x[1])
+        return users
 
     def get_potential_friends_(self):
         potential_friends = db.session.query(User).filter(User.tags.overlap(self.tags)).all() #tags-tags
