@@ -30,7 +30,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 {% if current_user.is_authenticated %}
-                <a class="nav-link active me-3" aria-current="page" href="#">Поиск встречи</a>
+                <a class="nav-link active me-3" aria-current="page" href="{{ url_for('main.index') }}">Поиск встречи</a>
                 {% endif %}
 
                 {% if not current_user.is_authenticated %}
