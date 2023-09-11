@@ -52,14 +52,9 @@ def delete_interested_tag(tag_id):
     db.session.commit()
     return jsonify({'success': 'ok'})    
 
-@api.route('/interested_tags', methods=['GET'])
-def get_interested_tags():
-    tags = Tag.query.all()
-    return jsonify([{'id': tag.id, 'name': tag.name} for tag in tags])
 
 
-
-@api.route('/tags/<int:tag_id>/subtagss', methods=['GET'])
+@api.route('/tags/<int:tag_id>/subtags', methods=['GET'])
 def get_subtags(tag_id):
     tags = Tag.query.get(tag_id).subtags
     return jsonify([{'id': tag.id, 'name': tag.name} for tag in tags])
