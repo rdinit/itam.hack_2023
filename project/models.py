@@ -105,28 +105,28 @@ class User(UserMixin, db.Model):
     def get_potential_teachers(self):
         current_subtags = set(self.interested_subtags)
         users = User.query.all()
-        users = list(map(lambda x: [x, len(set(x.subtags) & current_subtags)], current_subtags))
+        users = list(map(lambda x: [x, len(set(x.subtags) & current_subtags)], users))
         users.sort(key=lambda x: x[1])
         return list(reversed(users))
 
     def get_potential_cooperators(self):
         current_subtags = set(self.subtags)
         users = User.query.all()
-        users = list(map(lambda x: [x, len(set(x.subtags) & current_subtags)], current_subtags))
+        users = list(map(lambda x: [x, len(set(x.subtags) & current_subtags)], users))
         users.sort(key=lambda x: x[1])
         return list(reversed(users))
     
     def get_potential_coolearners(self):
         current_subtags = set(self.interested_subtags)
         users = User.query.all()
-        users = list(map(lambda x: [x, len(set(x.interested_subtags) & current_subtags)], current_subtags))
+        users = list(map(lambda x: [x, len(set(x.interested_subtags) & current_subtags)], users))
         users.sort(key=lambda x: x[1])
         return list(reversed(users))
 
     def get_potential_students(self):
         current_subtags = set(self.subtags)
         users = User.query.all()
-        users = list(map(lambda x: [x, len(set(x.interested_subtags) & current_subtags)], current_subtags))
+        users = list(map(lambda x: [x, len(set(x.interested_subtags) & current_subtags)], users))
         users.sort(key=lambda x: x[1])
         return list(reversed(users))
 
